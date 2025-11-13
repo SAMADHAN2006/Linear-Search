@@ -1,0 +1,54 @@
+// Q6.cpp
+#include <iostream>
+#include <stack>
+using namespace std;
+
+class TextEditor {
+    stack<string> undoStack, redoStack;
+public:
+    void makeChange();
+    void undoChange();
+    void redoChange();
+    void display();
+};
+
+void TextEditor::makeChange(){
+    string s; cout<<"Enter document content: ";
+    cin.ignore(); getline(cin, s);
+    undoStack.push(s);
+    while(!redoStack.empty()) redoStack.pop();
+    cout<<"Change made.\n";
+}
+
+void TextEditor::undoChange(){
+    if(undoStack.empty()){ cout<<"Nothing to undo\n"; return; }
+    redoStack.push(undoStack.top()); undoStack.pop();
+    cout<<"Undo done.\n";
+}
+
+void TextEditor::redoChange(){
+    if(redoStack.empty()){ cout<<"Nothing to redo\n"; return; }
+    undoStack.push(redoStack.top()); redoStack.pop();
+    cout<<"Redo done.\n";
+}
+
+void TextEditor::display(){
+    if(undoStack.empty()) cout<<"Document empty\n";
+    else cout<<"Current: "<<undoStack.top()<<"\n";
+}
+
+int main(){
+    TextEditor ed; int ch;
+    do{
+        cout<<"\n1.Make Change\n2.Undo\n3.Redo\n4.Display\n5.Exit\nChoice: "; cin>>ch;
+        switch(ch){
+            case 1: ed.makeChange(); break;
+            case 2: ed.undoChange(); break;
+            case 3: ed.redoChange(); break;
+            case 4: ed.display(); break;
+            case 5: cout<<"Exiting Q6\n"; break;
+            default: cout<<"Invalid\n";
+        }
+    }while(ch!=5);
+    return 0;
+}
