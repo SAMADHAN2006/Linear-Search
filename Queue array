@@ -1,0 +1,62 @@
+// Q7.cpp
+#include <iostream>
+using namespace std;
+
+class EventQueue {
+    string q[100];
+    int front, rear;
+public:
+    EventQueue();
+    void addEvent();
+    void processEvent();
+    void displayEvents();
+    void cancelEvent();
+};
+
+EventQueue::EventQueue(){ front = -1; rear = -1; }
+
+void EventQueue::addEvent(){
+    if(rear==99){ cout<<"Queue Full\n"; return; }
+    string e; cout<<"Enter event: "; cin>>e;
+    if(front==-1) front=0;
+    q[++rear]=e; cout<<"Added\n";
+}
+
+void EventQueue::processEvent(){
+    if(front==-1){ cout<<"No events\n"; return; }
+    cout<<"Processed: "<<q[front]<<"\n";
+    if(front==rear) front=rear=-1; else front++;
+}
+
+void EventQueue::displayEvents(){
+    if(front==-1){ cout<<"No pending events\n"; return; }
+    cout<<"Pending:\n";
+    for(int i=front;i<=rear;i++) cout<<q[i]<<"\n";
+}
+
+void EventQueue::cancelEvent(){
+    if(front==-1){ cout<<"No events\n"; return; }
+    string e; cout<<"Enter event to cancel: "; cin>>e;
+    int pos=-1;
+    for(int i=front;i<=rear;i++) if(q[i]==e){ pos=i; break; }
+    if(pos==-1){ cout<<"Not found\n"; return; }
+    for(int i=pos;i<rear;i++) q[i]=q[i+1];
+    rear--; if(rear<front) front=rear=-1;
+    cout<<"Cancelled\n";
+}
+
+int main(){
+    EventQueue eq; int ch;
+    do{
+        cout<<"\n1.Add\n2.Process\n3.Display\n4.Cancel\n5.Exit\nChoice: "; cin>>ch;
+        switch(ch){
+            case 1: eq.addEvent(); break;
+            case 2: eq.processEvent(); break;
+            case 3: eq.displayEvents(); break;
+            case 4: eq.cancelEvent(); break;
+            case 5: cout<<"Exiting Q7\n"; break;
+            default: cout<<"Invalid\n";
+        }
+    }while(ch!=5);
+    return 0;
+}
