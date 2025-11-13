@@ -1,0 +1,32 @@
+// Q19.cpp
+#include <iostream>
+using namespace std;
+
+class Graph {
+    int g[20][20], n;
+public:
+    Graph(); void input(); void checkConnected();
+};
+
+Graph::Graph(){ n=0; }
+
+void Graph::input(){
+    cout<<"Enter number of cities (<=20): "; cin>>n;
+    cout<<"Enter adjacency matrix (1 edge else 0):\n";
+    for(int i=0;i<n;i++) for(int j=0;j<n;j++) cin>>g[i][j];
+}
+
+void Graph::checkConnected(){
+    int vis[20]={0}, stack[20], top=-1;
+    stack[++top]=0; vis[0]=1;
+    while(top!=-1){
+        int u=stack[top--];
+        for(int v=0;v<n;v++) if(g[u][v] && !vis[v]){ vis[v]=1; stack[++top]=v; }
+    }
+    for(int i=0;i<n;i++) if(!vis[i]){ cout<<"Graph NOT connected\n"; return; }
+    cout<<"Graph connected\n";
+}
+
+int main(){
+    Graph gr; gr.input(); gr.checkConnected(); return 0;
+}
