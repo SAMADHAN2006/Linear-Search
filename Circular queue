@@ -1,0 +1,50 @@
+// Q8.cpp
+#include <iostream>
+using namespace std;
+
+class CircularQueue {
+    string cq[5];
+    int front, rear, size;
+public:
+    CircularQueue();
+    void addEvent();
+    void processEvent();
+    void displayEvents();
+};
+
+CircularQueue::CircularQueue(){ front = -1; rear = -1; size = 5; }
+
+void CircularQueue::addEvent(){
+    if((rear+1)%size==front){ cout<<"Full\n"; return; }
+    string e; cout<<"Enter event: "; cin>>e;
+    rear=(rear+1)%size; cq[rear]=e;
+    if(front==-1) front=0;
+    cout<<"Added\n";
+}
+
+void CircularQueue::processEvent(){
+    if(front==-1){ cout<<"No events\n"; return; }
+    cout<<"Processed: "<<cq[front]<<"\n";
+    if(front==rear) front=rear=-1; else front=(front+1)%size;
+}
+
+void CircularQueue::displayEvents(){
+    if(front==-1){ cout<<"No events\n"; return; }
+    int i=front;
+    do{ cout<<cq[i]<<"\n"; if(i==rear) break; i=(i+1)%size; } while(true);
+}
+
+int main(){
+    CircularQueue cq; int ch;
+    do{
+        cout<<"\n1.Add\n2.Process\n3.Display\n4.Exit\nChoice: "; cin>>ch;
+        switch(ch){
+            case 1: cq.addEvent(); break;
+            case 2: cq.processEvent(); break;
+            case 3: cq.displayEvents(); break;
+            case 4: cout<<"Exiting Q8\n"; break;
+            default: cout<<"Invalid\n";
+        }
+    }while(ch!=4);
+    return 0;
+}
