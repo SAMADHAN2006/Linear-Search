@@ -1,0 +1,43 @@
+// Q14.cpp
+#include <iostream>
+using namespace std;
+
+class LinearHash {
+    int table[10];
+public:
+    LinearHash(); void insertKey(int k); void deleteKey(int k); void display();
+};
+
+LinearHash::LinearHash(){ for(int i=0;i<10;i++) table[i]=-1; }
+
+void LinearHash::insertKey(int k){
+    int idx=k%10, start=idx;
+    while(table[idx]!=-1){ idx=(idx+1)%10; if(idx==start){ cout<<"Full\n"; return; } }
+    table[idx]=k; cout<<"Inserted\n";
+}
+
+void LinearHash::deleteKey(int k){
+    int idx=k%10, start=idx;
+    while(table[idx]!=k){
+        if(table[idx]==-1){ cout<<"Not found\n"; return; }
+        idx=(idx+1)%10; if(idx==start){ cout<<"Not found\n"; return; }
+    }
+    table[idx]=-1; cout<<"Deleted\n";
+}
+
+void LinearHash::display(){ for(int i=0;i<10;i++) cout<<i<<" : "<<table[i]<<"\n"; }
+
+int main(){
+    LinearHash h; int ch,k;
+    do{
+        cout<<"\n1.Insert\n2.Delete\n3.Display\n4.Exit\nChoice: "; cin>>ch;
+        switch(ch){
+            case 1: cout<<"Enter key: "; cin>>k; h.insertKey(k); break;
+            case 2: cout<<"Enter key: "; cin>>k; h.deleteKey(k); break;
+            case 3: h.display(); break;
+            case 4: cout<<"Exiting Q14\n"; break;
+            default: cout<<"Invalid\n";
+        }
+    }while(ch!=4);
+    return 0;
+}
