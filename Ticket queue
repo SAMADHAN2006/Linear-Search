@@ -1,0 +1,45 @@
+// Q18.cpp
+#include <iostream>
+using namespace std;
+
+class TicketQueue {
+    struct Node{ string name; Node* next; };
+    Node *front, *rear;
+public:
+    TicketQueue(); void enqueue(); void dequeue(); void display();
+};
+
+TicketQueue::TicketQueue(){ front=rear=NULL; }
+
+void TicketQueue::enqueue(){
+    Node* p=new Node;
+    cout<<"Enter customer name: "; cin>>p->name; p->next=NULL;
+    if(!rear) front=rear=p; else { rear->next=p; rear=p; }
+    cout<<"Added\n";
+}
+
+void TicketQueue::dequeue(){
+    if(!front){ cout<<"No customers\n"; return; }
+    Node* t=front; cout<<t->name<<" served\n"; front=front->next;
+    if(!front) rear=NULL; delete t;
+}
+
+void TicketQueue::display(){
+    if(!front){ cout<<"No waiting\n"; return; }
+    Node* t=front; cout<<"Waiting:\n"; while(t){ cout<<t->name<<"\n"; t=t->next; }
+}
+
+int main(){
+    TicketQueue tq; int ch;
+    do{
+        cout<<"\n1.Enqueue\n2.Dequeue\n3.Display\n4.Exit\nChoice: "; cin>>ch;
+        switch(ch){
+            case 1: tq.enqueue(); break;
+            case 2: tq.dequeue(); break;
+            case 3: tq.display(); break;
+            case 4: cout<<"Exiting Q18\n"; break;
+            default: cout<<"Invalid\n";
+        }
+    }while(ch!=4);
+    return 0;
+}
