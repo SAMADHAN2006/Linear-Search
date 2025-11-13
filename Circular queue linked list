@@ -1,0 +1,47 @@
+// Q20.cpp
+#include <iostream>
+using namespace std;
+
+class CircularQueue {
+    struct Node{ string event; Node* next; };
+    Node *front, *rear;
+public:
+    CircularQueue(); void addEvent(); void processEvent(); void displayEvents();
+};
+
+CircularQueue::CircularQueue(){ front=rear=NULL; }
+
+void CircularQueue::addEvent(){
+    Node* p=new Node; cout<<"Enter event: "; cin>>p->event;
+    if(!front){ front=rear=p; p->next=p; }
+    else { p->next=front; rear->next=p; rear=p; }
+    cout<<"Added\n";
+}
+
+void CircularQueue::processEvent(){
+    if(!front){ cout<<"No events\n"; return; }
+    cout<<"Processed: "<<front->event<<"\n";
+    if(front==rear){ delete front; front=rear=NULL; }
+    else { Node* t=front; front=front->next; rear->next=front; delete t; }
+}
+
+void CircularQueue::displayEvents(){
+    if(!front){ cout<<"No events\n"; return; }
+    Node* t=front;
+    do{ cout<<t->event<<"\n"; t=t->next; }while(t!=front);
+}
+
+int main(){
+    CircularQueue cq; int ch;
+    do{
+        cout<<"\n1.Add\n2.Process\n3.Display\n4.Exit\nChoice: "; cin>>ch;
+        switch(ch){
+            case 1: cq.addEvent(); break;
+            case 2: cq.processEvent(); break;
+            case 3: cq.displayEvents(); break;
+            case 4: cout<<"Exiting Q20\n"; break;
+            default: cout<<"Invalid\n";
+        }
+    }while(ch!=4);
+    return 0;
+}
