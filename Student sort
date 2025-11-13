@@ -1,0 +1,58 @@
+// Q10.cpp
+#include <iostream>
+using namespace std;
+
+class StudentList {
+    struct Node{ int roll; string name; int marks; Node* next; };
+    Node* head;
+public:
+    StudentList();
+    void addStudent();
+    void displayStudents();
+    void searchStudent();
+    void sortStudents();
+};
+
+StudentList::StudentList(){ head=NULL; }
+
+void StudentList::addStudent(){
+    Node* p=new Node;
+    cout<<"Enter Roll Name Marks: "; cin>>p->roll>>p->name>>p->marks;
+    p->next=head; head=p; cout<<"Added\n";
+}
+
+void StudentList::displayStudents(){
+    if(!head){ cout<<"No records\n"; return; }
+    Node* t=head; while(t){ cout<<t->roll<<" "<<t->name<<" "<<t->marks<<"\n"; t=t->next; }
+}
+
+void StudentList::searchStudent(){
+    if(!head){ cout<<"No records\n"; return; }
+    int r; cout<<"Enter roll to search: "; cin>>r;
+    Node* t=head;
+    while(t){ if(t->roll==r){ cout<<"Found: "<<t->roll<<" "<<t->name<<" "<<t->marks<<"\n"; return; } t=t->next; }
+    cout<<"Not found\n";
+}
+
+void StudentList::sortStudents(){
+    if(!head || !head->next){ cout<<"No need to sort\n"; return; }
+    for(Node* i=head;i;i=i->next) for(Node* j=i->next;j;j=j->next)
+        if(i->roll>j->roll){ swap(i->roll,j->roll); swap(i->name,j->name); swap(i->marks,j->marks); }
+    cout<<"Sorted\n";
+}
+
+int main(){
+    StudentList sl; int ch;
+    do{
+        cout<<"\n1.Add\n2.Display\n3.Search\n4.Sort\n5.Exit\nChoice: "; cin>>ch;
+        switch(ch){
+            case 1: sl.addStudent(); break;
+            case 2: sl.displayStudents(); break;
+            case 3: sl.searchStudent(); break;
+            case 4: sl.sortStudents(); break;
+            case 5: cout<<"Exiting Q10\n"; break;
+            default: cout<<"Invalid\n";
+        }
+    }while(ch!=5);
+    return 0;
+}
