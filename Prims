@@ -1,0 +1,48 @@
+INF = 999999
+
+class Graph:
+    def __init__(self):
+        self.n = 0
+        self.g = []
+
+    def input_graph(self):
+        self.n = int(input("Enter number of cities: "))
+        print("Enter adjacency matrix (0 if no direct road):")
+        self.g = []
+        for _ in range(self.n):
+            row = list(map(int, input().split()))
+            self.g.append(row)
+
+    def prims(self):
+        visited = [0] * self.n
+        visited[0] = 1
+        
+        edges = 0
+        total_cost = 0
+
+        print("\nEdges in Minimum Spanning Tree:\n")
+
+        while edges < self.n - 1:
+            minimum = INF
+            x = y = 0
+
+            for i in range(self.n):
+                if visited[i]:
+                    for j in range(self.n):
+                        if not visited[j] and self.g[i][j] != 0 and self.g[i][j] < minimum:
+                            minimum = self.g[i][j]
+                            x, y = i, j
+
+            print(f"{x} -- {y}  cost = {minimum}")
+            total_cost += minimum
+            visited[y] = 1
+            edges += 1
+
+        print("\nTotal Minimum Cost of Network =", total_cost)
+
+
+# ---------------- MAIN ----------------
+
+obj = Graph()
+obj.input_graph()
+obj.prims()
