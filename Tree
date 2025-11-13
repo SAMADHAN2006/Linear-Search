@@ -1,0 +1,65 @@
+// Q16.cpp
+#include <iostream>
+#include <stack>
+using namespace std;
+
+class ExprTree {
+    struct Node{ char data; Node *left,*right; Node(char c):data(c),left(NULL),right(NULL){} };
+    Node* root;
+public:
+    ExprTree(); void buildFromPrefix(string pre); void postorderNonRec(); void deleteTree();
+private:
+    Node* create(char c);
+};
+
+ExprTree::ExprTree(){ root=NULL; }
+ExprTree::Node* ExprTree::create(char c){ return new Node(c); }
+
+void ExprTree::buildFromPrefix(string pre){
+    stack<Node*> st;
+    for(int i=pre.size()-1;i>=0;i--){
+        char c=pre[i];
+        Node* t=create(c);
+        if(isalnum(c)) st.push(t);
+        else {
+            if(st.size()<2){ cout<<"Invalid\n"; return; }
+            t->left=st.top(); st.pop();
+            t->right=st.top(); st.pop();
+            st.push(t);
+        }
+    }
+    if(!st.empty()) root=st.top();
+}
+
+void ExprTree::postorderNonRec(){
+    if(!root){ cout<<"Empty\n"; return; }
+    stack<Node*> s1,s2; s1.push(root);
+    while(!s1.empty()){
+        Node* t=s1.top(); s1.pop(); s2.push(t);
+        if(t->left) s1.push(t->left);
+        if(t->right) s1.push(t->right);
+    }
+    while(!s2.empty()){ cout<<s2.top()->data<<" "; s2.pop(); }
+    cout<<"\n";
+}
+
+void ExprTree::deleteTree(){
+    if(!root){ cout<<"Empty\n"; return; }
+    stack<Node*> s; s.push(root);
+    while(!s.empty()){
+        Node* t=s.top(); s.pop();
+        if(t->left) s.push(t->left);
+        if(t->right) s.push(t->right);
+        delete t;
+    }
+    root=NULL; cout<<"Deleted\n";
+}
+
+int main(){
+    ExprTree et; string pre;
+    cout<<"Enter prefix expression: "; cin>>pre;
+    et.buildFromPrefix(pre);
+    cout<<"Postorder: "; et.postorderNonRec();
+    et.deleteTree();
+    return 0;
+}
