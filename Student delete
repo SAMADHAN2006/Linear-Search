@@ -1,0 +1,52 @@
+// Q9.cpp
+#include <iostream>
+using namespace std;
+
+class StudentList {
+    struct Node{ int roll; string name; int marks; Node* next; };
+    Node* head;
+public:
+    StudentList();
+    void addStudent();
+    void displayStudents();
+    void deleteStudent();
+};
+
+StudentList::StudentList(){ head = NULL; }
+
+void StudentList::addStudent(){
+    Node* p = new Node;
+    cout<<"Enter Roll Name Marks: "; cin>>p->roll>>p->name>>p->marks;
+    p->next = head; head = p;
+    cout<<"Added\n";
+}
+
+void StudentList::displayStudents(){
+    if(head==NULL){ cout<<"No records\n"; return; }
+    Node* t=head; while(t){ cout<<t->roll<<" "<<t->name<<" "<<t->marks<<"\n"; t=t->next; }
+}
+
+void StudentList::deleteStudent(){
+    if(head==NULL){ cout<<"No records\n"; return; }
+    int r; cout<<"Enter roll to delete: "; cin>>r;
+    Node *t=head, *prev=NULL;
+    while(t && t->roll!=r){ prev=t; t=t->next; }
+    if(!t){ cout<<"Not found\n"; return; }
+    if(!prev) head=head->next; else prev->next=t->next;
+    delete t; cout<<"Deleted\n";
+}
+
+int main(){
+    StudentList sl; int ch;
+    do{
+        cout<<"\n1.Add\n2.Display\n3.Delete\n4.Exit\nChoice: "; cin>>ch;
+        switch(ch){
+            case 1: sl.addStudent(); break;
+            case 2: sl.displayStudents(); break;
+            case 3: sl.deleteStudent(); break;
+            case 4: cout<<"Exiting Q9\n"; break;
+            default: cout<<"Invalid\n";
+        }
+    }while(ch!=4);
+    return 0;
+}
