@@ -1,0 +1,43 @@
+// Q17.cpp
+#include <iostream>
+using namespace std;
+
+class CallStack {
+    struct Node{ string func; Node* next; };
+    Node* top;
+public:
+    CallStack(); void pushCall(); void popCall(); void display();
+};
+
+CallStack::CallStack(){ top=NULL; }
+
+void CallStack::pushCall(){
+    Node* p=new Node;
+    cout<<"Enter function name: "; cin>>p->func;
+    p->next=top; top=p; cout<<"Pushed\n";
+}
+
+void CallStack::popCall(){
+    if(!top){ cout<<"Empty\n"; return; }
+    Node* t=top; top=top->next; cout<<"Popped "<<t->func<<"\n"; delete t;
+}
+
+void CallStack::display(){
+    if(!top){ cout<<"Empty\n"; return; }
+    Node* t=top; cout<<"Call Stack:\n"; while(t){ cout<<t->func<<"\n"; t=t->next; }
+}
+
+int main(){
+    CallStack cs; int ch;
+    do{
+        cout<<"\n1.Push(call)\n2.Pop(return)\n3.Display\n4.Exit\nChoice: "; cin>>ch;
+        switch(ch){
+            case 1: cs.pushCall(); break;
+            case 2: cs.popCall(); break;
+            case 3: cs.display(); break;
+            case 4: cout<<"Exiting Q17\n"; break;
+            default: cout<<"Invalid\n";
+        }
+    }while(ch!=4);
+    return 0;
+}
