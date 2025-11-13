@@ -1,0 +1,46 @@
+// Q12.cpp
+#include <iostream>
+using namespace std;
+
+class HashTable {
+    struct Node{ int key; Node* next; };
+    Node* table[10];
+public:
+    HashTable(); void insertKey(int k); void deleteKey(int k); void display();
+};
+
+HashTable::HashTable(){ for(int i=0;i<10;i++) table[i]=NULL; }
+
+void HashTable::insertKey(int k){
+    int idx=k%10; Node* p=new Node{k, table[idx]}; table[idx]=p; cout<<"Inserted\n";
+}
+
+void HashTable::deleteKey(int k){
+    int idx=k%10; Node *t=table[idx], *prev=NULL;
+    while(t && t->key!=k){ prev=t; t=t->next; }
+    if(!t){ cout<<"Not found\n"; return; }
+    if(!prev) table[idx]=t->next; else prev->next=t->next;
+    delete t; cout<<"Deleted\n";
+}
+
+void HashTable::display(){
+    for(int i=0;i<10;i++){
+        cout<<i<<" -> "; Node* t=table[i];
+        while(t){ cout<<t->key<<" -> "; t=t->next; } cout<<"NULL\n";
+    }
+}
+
+int main(){
+    HashTable h; int ch,k;
+    do{
+        cout<<"\n1.Insert\n2.Delete\n3.Display\n4.Exit\nChoice: "; cin>>ch;
+        switch(ch){
+            case 1: cout<<"Enter key: "; cin>>k; h.insertKey(k); break;
+            case 2: cout<<"Enter key: "; cin>>k; h.deleteKey(k); break;
+            case 3: h.display(); break;
+            case 4: cout<<"Exiting Q12\n"; break;
+            default: cout<<"Invalid\n";
+        }
+    }while(ch!=4);
+    return 0;
+}
